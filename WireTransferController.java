@@ -15,18 +15,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/wire-transfers")
 public class WireTransferController {
 
-    @PostMapping("/quote")
-    @ResponseStatus(HttpStatus.OK)
-    public WireTransferQuoteResponse quote(@Valid @RequestBody WireTransferQuoteRequest request) {
-        boolean requiresManualReview = request.amount().compareTo(new BigDecimal("25000")) >= 0;
-        boolean requiresStepUpAuth = request.amount().compareTo(new BigDecimal("10000")) >= 0;
-
-        BigDecimal fee = request.amount().compareTo(new BigDecimal("5000")) >= 0
-                ? new BigDecimal("25.00")
-                : new BigDecimal("10.00");
-
-        return new WireTransferQuoteResponse(
-                UUID.randomUUID().toString(),
                 request.currency(),
                 request.amount(),
                 fee,
@@ -57,3 +45,15 @@ public class WireTransferController {
             String expiresAt
     ) {}
 }
+
+
+
+
+    @PostMapping("/quote")
+    @ResponseStatus(HttpStatus.OK)
+    public WireTransferQuoteResponse quote(@Valid @RequestBody WireTransferQuoteRequest request) {
+        boolean requiresManualReview = request.amount().compareTo(new BigDecimal("25000")) >= 0;
+        boolean requiresStepUpAuth = request.amount().compareTo(new BigDecimal("10000")) >= 0;
+
+        return new WireTransferQuoteResponse(
+                UUID.randomUUID().toString(),
